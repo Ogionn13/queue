@@ -1,0 +1,6 @@
+/composer.phar
+/vendor/
+/logs/
+/test.php
+/.idea
+/PHP_errors.log

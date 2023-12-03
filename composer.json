@@ -1,0 +1,19 @@
+{
+  "require": {
+    "ext-json": "*",
+    "ext-curl": "*",
+    "vlucas/phpdotenv": "*"
+  },
+  "config": {
+    "platform": {
+      "php": "7.4"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app",
+      "PTS\\Hydrator\\": "modules/hydarorServise3.0.2/",
+      "PDO\\": "modules/PDO"
+    }
+  }
+}
