@@ -9,17 +9,22 @@ class Task
     protected string $inputData;
     protected bool $validTask;
 
+    protected int $timeStampCreate;
+
     protected string $workersMethod;
     protected bool $result;
     public function __construct(array $data){
+        var_dump($data);
         $this->validTask = false;
         if (!empty($data)){
-            $this->className = $data['className'];
-            $this->urlHook = $data['urlHook'];
-            $this->inputData = $data['inputData'];
+            $this->timeStampCreate = strtotime($data['created_at']);
+            $this->className = empty($data['className'])?"":$data['className'];
+            $this->urlHook = empty($data['urlHook'])?"":$data['urlHook'];
+            $this->inputData = empty($data['inputData'])?"":$data['inputData'];
             $this->checkValid();
             $this->setWorkersMethod();
             $this->result=false;
+//var_dump($this);
         }
 
     }
@@ -58,11 +63,6 @@ class Task
         return $this->result;
     }
 
-    public function setResult(bool $result): void
-    {
-        $this->result = $result;
-    }
-
     /**
      * @return string
      */
@@ -77,6 +77,13 @@ class Task
     public function getUrlHook(): string
     {
         return $this->urlHook;
+    }
+
+    public function setResult($code){
+        if ($code >=200 and $code<=204){
+            $this->result = true;
+        } else {
+            $this->result=false;}
     }
 
 

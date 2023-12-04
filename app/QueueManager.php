@@ -16,10 +16,11 @@ class QueueManager
     public function __construct(Queue $queue){
         $this->timestampStart = time();
         $this->queue = $queue;
-        $this->leadLastTime()->checkFinishLastScript();
+        $this->getLastTimeStart()->checkFinishLastScript();
+
     }
 
-    protected function leadLastTime(): QueueManager
+    protected function getLastTimeStart(): QueueManager
     {
         $this->lastTimestampStart = 0;
         if (file_exists(Config::LAST_TIME_START_FILE)){
@@ -48,24 +49,28 @@ class QueueManager
     }
 
     protected function isHaveNextTask():bool{
-        $this -> nextTask = $this->queue->getOneRow();
+        $this -> nextTask = $this->queue->getTask();
+        var_dump($this -> nextTask);
         return $this->nextTask->isValidTask();
     }
 
     protected function createFileStartTime(){
-
+        file_put_contents(Config::LAST_TIME_START_FILE, $this->timestampStart);
     }
 
     protected function isHaveTimeForTask():bool{
-        if (time() - $this->timestampStart <= Config::TIME_OF_WORK)
+        if (time() - $this->timestampStart <= Config::TIME_OF_WORK){
             return true;
+        }
+
         return false;
     }
 
     public function start(){
         $this->createFileStartTime();
         while ($this->isHaveTimeForTask() and $this->isHaveNextTask()){
-            $worker = new Worker($this->nextTask);
+            new Worker($this->nextTask);
+            break;
         }
     }
 

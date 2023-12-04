@@ -5,6 +5,8 @@ namespace App\connectionMySQL;
 use App\Config;
 use App\Task;
 
+
+
 class Queue extends DataBaseManager
 {
     protected Task  $lastTask;
@@ -16,9 +18,11 @@ class Queue extends DataBaseManager
 
     }
 
-    public function getOneRow(): Task
+    public function getTask(): Task
     {
-        $this->lastTask = new Task($this->select("WHERE `isWokeds` = 0 ORDER BY `attempts` LIMIT 1"));
+        $data = $this->select("WHERE `isWokeds` = 0 ORDER BY `attempts` LIMIT 1");
+
+        $this->lastTask = new Task($data[0]);
         return $this->lastTask;
     }
 

@@ -5,7 +5,9 @@ namespace App;
 class Worker
 {
     protected Task $task;
-    private bool $result;
+
+
+
 
     public function __construct(Task $task)
     {
@@ -16,8 +18,8 @@ class Worker
     private function run()
     {
         $method = $this->task->getWorkersMethod();
-        $this->$method();
-        $this->task->setResult();
+        $result  = $this->$method();
+        $this->task->setResult($result);
 
     }
 
@@ -29,7 +31,17 @@ class Worker
 
     private function sentToScript(){
         $url = $this->task->getUrlHook();
+        $data = $this->task->getInputData();
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_decode($data,true));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
+        return $code;
     }
 
 }
