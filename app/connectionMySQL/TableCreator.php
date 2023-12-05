@@ -19,9 +19,9 @@ class TableCreator
                     urlHook varchar(2000),
                     inputData TEXT,
                     attempts TINYINT DEFAULT 0,
-                    isWokeds BOOLEAN DEFAULT FALSE NOT NULL,
-                    timeToTake int,
-                    timeWork int
+                    isWorked BOOLEAN DEFAULT FALSE NOT NULL,
+                    timeWaiting int,
+                    timeWorking int
                 )
         ";
 

@@ -20,23 +20,31 @@ class Queue extends DataBaseManager
 
     public function getTask(): Task
     {
-        $data = $this->select("WHERE `isWokeds` = 0 ORDER BY `attempts` LIMIT 1");
+
+        $data = $this->select("WHERE `isWorked` = 0 and `attempts` < ". Config::MAX_ATTEMPTS . " ORDER BY `attempts` LIMIT 1");
 
         $this->lastTask = new Task($data[0]);
         return $this->lastTask;
     }
 
 
-    protected function registerStartWork(){
-        $valueAttempt = $this->lastRow['attempts'];
-        $id = $this->lastRow['id'];
-        if (is_int($valueAttempt) and is_int($id)){
-            $this->updateById($id, ["attempts" => ++$valueAttempt]);
-        }
+
+
+    public function registerFinishWork(Task $task){
+        $params = $this->changeBoolToInt([
+            "isWorked" => $task->isResult(),
+            "timeWorking" => $task->getTimeStampLenWork()
+        ]);
+        $this->updateById($task->getId(),$params);
+
     }
 
-
-    protected function registerFinishWork(){
+    public function registerStartWork(Task $task){
+        $params = $this->changeBoolToInt([
+            "attempts" => $task->getAttempts(),
+            "timeWaiting" => $task->getTimestampWait()
+        ]);
+        $this->updateById($task->getId(), $params);
 
     }
 

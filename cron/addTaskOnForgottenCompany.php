@@ -28,7 +28,7 @@ use App\connectionMySQL\Queue;
 
     foreach ($companies as $company){
         $dto  = [
-            "urlHook" => "url",
+            "urlHook" => "https://hub3.integr3at.pro/api/trendAgent/queue/dev/test_hook.php",
             "inputData" => json_encode($company)
         ];
         $queue->insertOneInTable($dto);

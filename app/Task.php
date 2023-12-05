@@ -9,24 +9,43 @@ class Task
     protected string $inputData;
     protected bool $validTask;
 
-    protected int $timeStampCreate;
+
+    protected int $timestampTake;
+    protected int $timestampWait;
+    protected int $timeStampLenWork;
 
     protected string $workersMethod;
     protected bool $result;
-    public function __construct(array $data){
-        var_dump($data);
+
+    protected int $attempts;
+
+    protected int $id;
+    public function __construct(?array $data){
+
         $this->validTask = false;
         if (!empty($data)){
-            $this->timeStampCreate = strtotime($data['created_at']);
+            $this->id = empty($data['id'])?"":$data['id'];
             $this->className = empty($data['className'])?"":$data['className'];
             $this->urlHook = empty($data['urlHook'])?"":$data['urlHook'];
             $this->inputData = empty($data['inputData'])?"":$data['inputData'];
+            $this->attempts = $data['attempts']+1;
             $this->checkValid();
             $this->setWorkersMethod();
             $this->result=false;
-//var_dump($this);
+            $this->timestampTake = time();
+            $this->timestampWait =$this->timestampTake - strtotime($data['created_at']);
+
+
         }
 
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttempts(): int
+    {
+        return $this->attempts;
     }
     private function setWorkersMethod()
     {
@@ -79,13 +98,37 @@ class Task
         return $this->urlHook;
     }
 
-    public function setResult($code){
-        if ($code >=200 and $code<=204){
-            $this->result = true;
-        } else {
-            $this->result=false;}
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
 
+    /**
+     * @return int
+     */
+    public function getTimestampWait(): int
+    {
+        return $this->timestampWait;
+    }
+
+    public function calcTimestampLenWork(){
+        $this->timeStampLenWork = time() - $this->timestampTake;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeStampLenWork(): int
+    {
+        return $this->timeStampLenWork;
+    }
+
+    public function setResult(bool $result){
+        $this->result = $result;
+    }
 
 }

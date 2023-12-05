@@ -9,6 +9,8 @@ class Worker
 
 
 
+
+
     public function __construct(Task $task)
     {
         $this->task = $task;
@@ -19,7 +21,7 @@ class Worker
     {
         $method = $this->task->getWorkersMethod();
         $result  = $this->$method();
-        $this->task->setResult($result);
+        $this->addResultWork($result);
 
     }
 
@@ -27,6 +29,7 @@ class Worker
         $className = $this->task->getClassName();
          $class = new $className($this->task->getInputData());
          $this->result = $class->getResult();
+         $this->addResult();
     }
 
     private function sentToScript(){
@@ -40,8 +43,16 @@ class Worker
         curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+        if ($code >=200 and $code<=204)
+            return true;
+        return false;
 
-        return $code;
+    }
+
+    private function addResultWork(bool $result){
+        $this->task->calcTimestampLenWork();
+        $this->task->setResult($result);
+
     }
 
 }

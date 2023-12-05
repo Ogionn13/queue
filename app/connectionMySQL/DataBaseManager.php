@@ -62,7 +62,7 @@ abstract class DataBaseManager
     }
 
     public function updateById(int $id, $where =[]){
-        $this->db->update($this->table, ['id' => $id], $where);
+        $this->db->update($this->table, $where, ['id' => $id]);
     }
 
 
