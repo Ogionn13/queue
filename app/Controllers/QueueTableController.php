@@ -23,16 +23,17 @@ class QueueTableController
 
     }
 
-    protected function getLastTimeStart(): QueueTableController
-    {
-        $this->lastTimestampStart = 0;
-        if (file_exists(Config::LAST_TIME_START_FILE)){
-            $this->lastTimestampStart = (int)(file_get_contents(Config::LAST_TIME_START_FILE));
+    public function start(){
+        $this->createFileStartTime();
+        while ($this->isHaveTimeForTask() and $this->isHaveNextTask()){
+            $this->queueTable->registerStartWork($this -> nextTask);
+            new Worker($this->nextTask);
+            $this->queueTable->registerFinishWork($this -> nextTask);
+
         }
-        return $this;
     }
 
-    /**подразумевает что если очередь была запущена более 330 сек назад и по каким то причинам файл с временем запуска не удалился - скрипт остановил сервер
+    /**Подразумевает что если очередь была запущена более 330 сек назад и по каким то причинам файл с временем запуска не удалился - скрипт остановил сервер
      * @return void
      */
     protected function checkFinishLastScript(){
@@ -43,23 +44,24 @@ class QueueTableController
         }
     }
 
-    public function finish(){
-        unlink(Config::LAST_TIME_START_FILE);
+    protected function getLastTimeStart(): QueueTableController
+    {
+        $this->lastTimestampStart = 0;
+        if (file_exists(Config::LAST_TIME_START_FILE)){
+            $this->lastTimestampStart = (int)(file_get_contents(Config::LAST_TIME_START_FILE));
+        }
+        return $this;
     }
 
     public function isCanStart():bool{
         return $this->canStart;
     }
 
+
     protected function isHaveNextTask():bool{
         $this -> nextTask = $this->queueTable->getTask();
         return $this->nextTask->isValidTask();
     }
-
-    protected function createFileStartTime(){
-        file_put_contents(Config::LAST_TIME_START_FILE, $this->timestampStart);
-    }
-
     protected function isHaveTimeForTask():bool{
         if (time() - $this->timestampStart <= Config::TIME_OF_WORK){
             return true;
@@ -67,14 +69,12 @@ class QueueTableController
         return false;
     }
 
-    public function start(){
-        $this->createFileStartTime();
-        while ($this->isHaveTimeForTask() and $this->isHaveNextTask()){
-            $this->queueTable->registerStartWork($this -> nextTask);
-            new Worker($this->nextTask);
-            $this->queueTable->registerFinishWork($this -> nextTask);
+    protected function createFileStartTime(){
+        file_put_contents(Config::LAST_TIME_START_FILE, $this->timestampStart);
+    }
 
-        }
+    public function finish(){
+        unlink(Config::LAST_TIME_START_FILE);
     }
 
 }

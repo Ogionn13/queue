@@ -90,9 +90,6 @@ class Task
         $this->timestampLenWork = time() - $this->timestampTake;
     }
 
-    /**
-     * @return int
-     */
     public function getTimeStampLenWork(): int
     {
         return $this->timestampLenWork;
