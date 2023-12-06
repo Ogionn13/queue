@@ -1,15 +1,15 @@
 <?php
 
-use App\connectionMySQL\Queue;
-use App\QueueManager;
+use App\connectionMySQL\QueueTable;
+use App\Controllers\QueueTableController;
 
 const ROOT = __DIR__;
 
 require_once ROOT . "/vendor/autoload.php";
 
-$dbQueue = new Queue();
+$dbQueue = new QueueTable();
 
-$queueManager = new QueueManager($dbQueue);
+$queueManager = new QueueTableController($dbQueue);
 
 if ($queueManager->isCanStart()){
 

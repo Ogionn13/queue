@@ -3,13 +3,21 @@
 namespace App\connectionMySQL;
 
 use App\Config;
+use App\Controllers\DataTransformerController;
 use App\Task;
 
 
-
-class Queue extends DataBaseManager
+class QueueTable extends DataBaseManager
 {
     protected Task  $lastTask;
+
+    public function isUniqueInputData(string $inputData):bool
+    {
+        $data = $this->select( "WHERE `inputData` = '$inputData' and `isWorked` = 0 and `attempts` < ".Config::MAX_ATTEMPTS);
+        if (empty($data))
+            return true;
+        return false;
+    }
 
 
     protected function setTableName(): void
@@ -20,11 +28,11 @@ class Queue extends DataBaseManager
 
     public function getTask(): Task
     {
-
         $data = $this->select("WHERE `isWorked` = 0 and `attempts` < ". Config::MAX_ATTEMPTS . " ORDER BY `attempts` LIMIT 1");
-
-        $this->lastTask = new Task($data[0]);
-        return $this->lastTask;
+        $data = (empty($data))? []: $data[0];
+        $task = $this->dataTransformerController->TaskMapper($data);
+        $task->setTimestampTake();
+        return $task;
     }
 
 

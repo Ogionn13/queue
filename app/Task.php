@@ -2,43 +2,23 @@
 
 namespace App;
 
+use Bitrix\Bizproc\BaseType\Value\DateTime;
+
 class Task
 {
     protected string $className;
     protected string $urlHook;
     protected string $inputData;
-    protected bool $validTask;
-
-
-    protected int $timestampTake;
     protected int $timestampWait;
-    protected int $timeStampLenWork;
+    protected int $timestampLenWork;
+    protected int $timestampTake;
 
-    protected string $workersMethod;
     protected bool $result;
 
     protected int $attempts;
 
     protected int $id;
-    public function __construct(?array $data){
 
-        $this->validTask = false;
-        if (!empty($data)){
-            $this->id = empty($data['id'])?"":$data['id'];
-            $this->className = empty($data['className'])?"":$data['className'];
-            $this->urlHook = empty($data['urlHook'])?"":$data['urlHook'];
-            $this->inputData = empty($data['inputData'])?"":$data['inputData'];
-            $this->attempts = $data['attempts']+1;
-            $this->checkValid();
-            $this->setWorkersMethod();
-            $this->result=false;
-            $this->timestampTake = time();
-            $this->timestampWait =$this->timestampTake - strtotime($data['created_at']);
-
-
-        }
-
-    }
 
     /**
      * @return int
@@ -47,30 +27,21 @@ class Task
     {
         return $this->attempts;
     }
-    private function setWorkersMethod()
-    {
-        if (!empty($this->className)){
-            $this->workersMethod = "runScript";
-        } else{
-            $this->workersMethod = "sentToScript";
-        }
-
-    }
-
-    private function checkValid()
-    {
-        if (!empty($this->className) or !empty($this->urlHook))
-            $this->validTask = true;
-    }
-
 
     public function isValidTask(): bool
     {
-        return $this->validTask;
+        if (!empty($this->className) or !empty($this->urlHook))
+            return true;
+        return false;
     }
 
-    public function getWorkersMethod(){
-        return $this->workersMethod;
+    public function getWorkersMethod(): string
+    {
+        if (!empty($this->className)){
+            return "runScript";
+        } else{
+            return "sentToScript";
+        }
     }
 
     public function getInputData(){
@@ -116,7 +87,7 @@ class Task
     }
 
     public function calcTimestampLenWork(){
-        $this->timeStampLenWork = time() - $this->timestampTake;
+        $this->timestampLenWork = time() - $this->timestampTake;
     }
 
     /**
@@ -124,11 +95,17 @@ class Task
      */
     public function getTimeStampLenWork(): int
     {
-        return $this->timeStampLenWork;
+        return $this->timestampLenWork;
     }
 
     public function setResult(bool $result){
         $this->result = $result;
+    }
+
+
+    public function setTimestampTake(): void
+    {
+        $this->timestampTake = time();
     }
 
 }

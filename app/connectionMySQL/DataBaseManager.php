@@ -2,6 +2,7 @@
 
 namespace App\connectionMySQL;
 
+use App\Controllers\DataTransformerController;
 use PDO\DB;
 use App\Config;
 
@@ -10,11 +11,14 @@ abstract class DataBaseManager
     protected DB $db;
     protected string $table;
 
+    protected DataTransformerController $dataTransformerController;
+
 
     public function __construct()
     {
         $this->db = new DB(Config::HOST, Config::PORT, Config::NAME_DB, Config::USER, Config::PASSWORD);
         $this->setTableName();
+        $this->dataTransformerController = new DataTransformerController();
     }
 
     abstract protected function setTableName():void;

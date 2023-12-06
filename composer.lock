@@ -4,8 +4,118 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae2f8004eaa59512d1f183aeaba2566a",
+    "content-hash": "d5258c472b693432de3f06d17708b5aa",
     "packages": [
+        {
+            "name": "alexpts/php-data-transformer2",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexpts/php-data-transformer2.git",
+                "reference": "41f99d191d412912ae984390610c8cb7c94057a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexpts/php-data-transformer2/zipball/41f99d191d412912ae984390610c8cb7c94057a5",
+                "reference": "41f99d191d412912ae984390610c8cb7c94057a5",
+                "shasum": ""
+            },
+            "require": {
+                "alexpts/php-hydrator": "^3.0",
+                "php": "^7.4",
+                "psr/container": "^1.0"
+            },
+            "require-dev": {
+                "blackfire/php-sdk": "^1.21",
+                "fzaninotto/faker": "^1.9",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PTS\\DataTransformer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexpts",
+                    "email": "alexpts3@gmail.com"
+                }
+            ],
+            "description": "Convert model to dto, convert dto to model",
+            "homepage": "https://github.com/alexpts/php-data-transformer2",
+            "keywords": [
+                "converter",
+                "data",
+                "dto",
+                "mapper",
+                "model",
+                "transform"
+            ],
+            "support": {
+                "issues": "https://github.com/alexpts/php-data-transformer2/issues",
+                "source": "https://github.com/alexpts/php-data-transformer2/tree/master"
+            },
+            "time": "2020-06-19T20:42:47+00:00"
+        },
+        {
+            "name": "alexpts/php-hydrator",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexpts/php-hydrator.git",
+                "reference": "755844f243720af2532f8fdde88cfdd852e49165"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexpts/php-hydrator/zipball/755844f243720af2532f8fdde88cfdd852e49165",
+                "reference": "755844f243720af2532f8fdde88cfdd852e49165",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "blackfire/php-sdk": "^1.21",
+                "fzaninotto/faker": "^1.9",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PTS\\Hydrator\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexpts",
+                    "email": "alexpts3@gmail.com"
+                }
+            ],
+            "description": "Convert model to dto, convert dto to model",
+            "homepage": "https://github.com/alexpts/php-hydrator",
+            "keywords": [
+                "converter",
+                "data",
+                "dto",
+                "mapper",
+                "model",
+                "transform"
+            ],
+            "support": {
+                "issues": "https://github.com/alexpts/php-hydrator/issues",
+                "source": "https://github.com/alexpts/php-hydrator/tree/master"
+            },
+            "time": "2020-02-16T09:33:31+00:00"
+        },
         {
             "name": "graham-campbell/result-type",
             "version": "v1.1.2",
@@ -142,6 +252,54 @@
                 }
             ],
             "time": "2023-11-12T21:59:55+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/513e0666f7216c7459170d56df27dfcefe1689ea",
+                "reference": "513e0666f7216c7459170d56df27dfcefe1689ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "https://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "support": {
+                "issues": "https://github.com/php-fig/container/issues",
+                "source": "https://github.com/php-fig/container/tree/1.1.2"
+            },
+            "time": "2021-11-05T16:50:12+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

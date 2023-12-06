@@ -1,26 +1,29 @@
 <?php
 
-namespace App;
+namespace App\Controllers;
 
-use App\connectionMySQL\Queue;
+use App\Config;
+use App\connectionMySQL\QueueTable;
+use App\Task;
+use App\Worker;
 
-class QueueManager
+class QueueTableController
 {
     protected int $timestampStart;
     protected bool $canStart;
     protected int $lastTimestampStart;
 
     protected Task $nextTask;
-    protected Queue $queue;
+    protected QueueTable $queueTable;
 
-    public function __construct(Queue $queue){
+    public function __construct(QueueTable $queue){
         $this->timestampStart = time();
-        $this->queue = $queue;
+        $this->queueTable = $queue;
         $this->getLastTimeStart()->checkFinishLastScript();
 
     }
 
-    protected function getLastTimeStart(): QueueManager
+    protected function getLastTimeStart(): QueueTableController
     {
         $this->lastTimestampStart = 0;
         if (file_exists(Config::LAST_TIME_START_FILE)){
@@ -49,7 +52,7 @@ class QueueManager
     }
 
     protected function isHaveNextTask():bool{
-        $this -> nextTask = $this->queue->getTask();
+        $this -> nextTask = $this->queueTable->getTask();
         return $this->nextTask->isValidTask();
     }
 
@@ -67,9 +70,9 @@ class QueueManager
     public function start(){
         $this->createFileStartTime();
         while ($this->isHaveTimeForTask() and $this->isHaveNextTask()){
-            $this->queue->registerStartWork($this -> nextTask);
+            $this->queueTable->registerStartWork($this -> nextTask);
             new Worker($this->nextTask);
-            $this->queue->registerFinishWork($this -> nextTask);
+            $this->queueTable->registerFinishWork($this -> nextTask);
 
         }
     }

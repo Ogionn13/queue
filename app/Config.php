@@ -20,4 +20,6 @@ const MAX_ATTEMPTS = 3;   //MAX_ATTEMPTS <= 127
 const TIME_OF_WORK = 240;
 const DIR_PDO_LOG = ROOT."/logs/PDO/";
 const LAST_TIME_START_FILE = ROOT."/data_files/lastTimeStart.json";
+
+
 }
