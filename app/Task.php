@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Bitrix\Bizproc\BaseType\Value\DateTime;
-
 class Task
 {
     protected string $className;
@@ -20,9 +18,6 @@ class Task
     protected int $id;
 
 
-    /**
-     * @return int
-     */
     public function getAttempts(): int
     {
         return $this->attempts;
@@ -30,27 +25,34 @@ class Task
 
     public function isValidTask(): bool
     {
-        if (!empty($this->className) or !empty($this->urlHook))
+        if (!empty($this->className) or !empty($this->urlHook)) {
             return true;
+        }
         return false;
     }
 
     public function getWorkersMethod(): string
     {
-        if (!empty($this->className)){
+        if (!empty($this->className)) {
             return "runScript";
-        } else{
+        } else {
             return "sentToScript";
         }
     }
 
-    public function getInputData(){
+    public function getInputData(): string
+    {
         return $this->inputData;
     }
 
     public function isResult(): bool
     {
         return $this->result;
+    }
+
+    public function setResult(bool $result)
+    {
+        $this->result = $result;
     }
 
     /**
@@ -77,7 +79,6 @@ class Task
         return $this->id;
     }
 
-
     /**
      * @return int
      */
@@ -86,7 +87,8 @@ class Task
         return $this->timestampWait;
     }
 
-    public function calcTimestampLenWork(){
+    public function calcTimestampLenWork()
+    {
         $this->timestampLenWork = time() - $this->timestampTake;
     }
 
@@ -94,11 +96,6 @@ class Task
     {
         return $this->timestampLenWork;
     }
-
-    public function setResult(bool $result){
-        $this->result = $result;
-    }
-
 
     public function setTimestampTake(): void
     {

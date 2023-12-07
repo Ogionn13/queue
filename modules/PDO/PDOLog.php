@@ -8,6 +8,7 @@ use DateTime;
 class PDOLog
 {
     private $path = '';
+
     public function __construct()
     {
         $this->path = Config::DIR_PDO_LOG;
@@ -16,7 +17,7 @@ class PDOLog
     public function write($message, $fileSalt)
     {
         $date = new DateTime();
-        $log  = $this->path . $date->format('Y-m-d') . "-" . md5($date->format('Y-m-d') . $fileSalt) . ".txt";
+        $log = $this->path . $date->format('Y-m-d') . "-" . md5($date->format('Y-m-d') . $fileSalt) . ".txt";
         if (is_dir($this->path)) {
             if (!file_exists($log)) {
                 $fh = fopen($log, 'a+') or die("Fatal Error !");
@@ -32,6 +33,7 @@ class PDOLog
             }
         }
     }
+
     private function edit($log, DateTime $date, $message)
     {
         $logcontent = "Time : " . $date->format('H:i:s') . "\r\n" . $message . "\r\n\r\n";

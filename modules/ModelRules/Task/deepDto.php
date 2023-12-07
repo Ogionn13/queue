@@ -1,4 +1,5 @@
 <?php
+
 return [
     'id' => [],
     'result' => [
@@ -7,32 +8,36 @@ return [
     "inputData" => [],
     'className' => [
         'pipe' => [
-            function(?string $className){
-                    return (empty ($className))? "" :$className;  }
-                    ]
+            function (?string $className) {
+                return (empty ($className)) ? "" : $className;
+            }
+        ]
     ],
     'urlHook' => [
         'pipe' => [
-            function(?string $urlHook){
-                return (empty ($urlHook))? "" :$urlHook;   }
-            ]
-        ],
-    'attempts'  => [
-        'pipe' =>[
-            function(int $attempts){
-                return ++$attempts;   }
+            function (?string $urlHook) {
+                return (empty ($urlHook)) ? "" : $urlHook;
+            }
         ]
-        ],
+    ],
+    'attempts' => [
+        'pipe' => [
+            function (int $attempts) {
+                return ++$attempts;
+            }
+        ]
+    ],
     'created_at' => [
         'prop' => 'timestampWait',
-        'pipe' =>[
-            function(string $created_at){
-                return time() - strtotime($created_at);  }
+        'pipe' => [
+            function (string $created_at) {
+                return time() - strtotime($created_at);
+            }
         ]
     ]
 
 
-    ];
+];
 
 
 //    'password' => [

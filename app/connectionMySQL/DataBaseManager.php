@@ -2,9 +2,9 @@
 
 namespace App\connectionMySQL;
 
+use App\Config;
 use App\Controllers\DataTransformerController;
 use PDO\DB;
-use App\Config;
 
 abstract class DataBaseManager
 {
@@ -21,7 +21,22 @@ abstract class DataBaseManager
         $this->dataTransformerController = new DataTransformerController();
     }
 
-    abstract protected function setTableName():void;
+    abstract protected function setTableName(): void;
+
+    public function select($params, $columns = "*")
+    {
+        if (is_array($columns)) {
+            $columns = join(", ", $columns);
+        }
+        $query = "SELECT $columns FROM {$this->table} " . $params;
+        return $this->db->query($query);
+    }
+
+    public function insertOneInTable(array $dto)
+    {
+        $this->db->insert($this->table, $this->changeBoolToInt($dto));
+        return $this;
+    }
 
     protected function changeBoolToInt(array $dto): array
     {
@@ -31,6 +46,12 @@ abstract class DataBaseManager
             }
         }
         return $dto;
+    }
+
+    public function insertInTableMulti(array $dtoArr)
+    {
+        $this->db->insertMulti($this->table, $this->changeBoolToIntMulti($dtoArr));
+        return $this;
     }
 
     protected function changeBoolToIntMulti(array $dtoArr): array
@@ -45,27 +66,8 @@ abstract class DataBaseManager
         return $dtoArr;
     }
 
-    public function select($params, $columns = "*"){
-        if (is_array($columns)){
-            $columns = join(", ", $columns);
-        }
-        $query = "SELECT $columns FROM {$this->table} ".$params;
-        return $this->db->query($query);
-    }
-
-    public function insertOneInTable(array $dto)
+    public function updateById(int $id, $where = [])
     {
-        $this->db->insert($this->table, $this->changeBoolToInt($dto));
-        return $this;
-    }
-
-    public function insertInTableMulti(array $dtoArr)
-    {
-        $this->db->insertMulti($this->table, $this->changeBoolToIntMulti($dtoArr));
-        return $this;
-    }
-
-    public function updateById(int $id, $where =[]){
         $this->db->update($this->table, $where, ['id' => $id]);
     }
 

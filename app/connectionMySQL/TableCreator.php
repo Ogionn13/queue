@@ -9,7 +9,6 @@ use PDO\DB;
 class TableCreator
 {
 
-    protected object $db;
     const QUEUE = "
         create table if not exists queue(
                     id int PRIMARY KEY auto_increment ,     
@@ -24,8 +23,10 @@ class TableCreator
                     timeWorking int
                 )
         ";
+    protected object $db;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->db = new DB(Config::HOST, Config::PORT, Config::NAME_DB, Config::USER, Config::PASSWORD);
     }
 

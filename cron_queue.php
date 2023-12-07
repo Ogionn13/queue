@@ -11,8 +11,7 @@ $dbQueue = new QueueTable();
 
 $queueManager = new QueueTableController($dbQueue);
 
-if ($queueManager->isCanStart()){
-
+if ($queueManager->isCanStart()) {
     $queueManager->start();
     $queueManager->finish();
 }
